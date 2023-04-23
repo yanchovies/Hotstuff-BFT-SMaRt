@@ -1,1 +1,1 @@
-start "test-app-1" cmd /k call smartrun.bat bftsmart.demo.counter.CounterClient 1001 2 1000
+start "client" cmd /k call smartrun.bat hotstuff.benchmark.ThroughputLatencyClient 2001 1 1000 1000

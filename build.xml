@@ -26,7 +26,7 @@
 		</javac>
 	</target>
 	<target name="jar" description="Compression target">
-		<jar jarfile="${dist.dir}/BFT-SMaRt.jar">
+		<jar jarfile="${dist.dir}/HotStuff.jar">
 			<fileset dir="${build.dir}">
 				<include name="**/*.class" />
 			</fileset>
@@ -39,7 +39,7 @@
 	    <junit>
 	      <classpath refid="classpath.test" />
 	      <formatter type="brief" usefile="false" />
-	      <test name="bftsmart.demo.keyvalue.KVClientTest" />
+	      <test name="hotstuff.demo.keyvalue.KVClientTest" />
 	    </junit>
 	  </target>
 </project>
