@@ -25,9 +25,11 @@ public class EVThroughputLatencyClient {
     private static ArrayList<String> registeredVehicles = new ArrayList<String>();
     private static ArrayList<String> registeredUsers = new ArrayList<String>();
 
+    private static byte[] paddingToExtend;
+
     public static void main(String[] args) throws InterruptedException {
         if (args.length != 4) {
-            System.out.println("USAGE: bftsmart.demo.EVsharing.EVThroughputLatencyClient <initial client id> " +
+            System.out.println("USAGE: hotstuff.demo.EVsharing.EVThroughputLatencyClient <initial client id> " +
                     "<num clients> <number of operations per client> <request size>");// <isWrite?> <measurement leader?>
             System.exit(-1);
         }
@@ -41,10 +43,13 @@ public class EVThroughputLatencyClient {
         boolean measurementLeader = true;//Boolean.parseBoolean(args[5]);
         CountDownLatch latch = new CountDownLatch(numClients);
         EVThroughputLatencyClient.Client[] clients = new EVThroughputLatencyClient.Client[numClients];
-//        data = new byte[requestSize];
-//        for (int i = 0; i < requestSize; i++) {
-//            data[i] = (byte) i;
-//        }
+        data = new byte[requestSize];
+        for (int i = 0; i < requestSize; i++) {
+            data[i] = (byte) i;
+        }
+
+        paddingToExtend = data;
+
 //        ByteBuffer writeBuffer = ByteBuffer.allocate(1 + Integer.BYTES + requestSize);
 //        writeBuffer.put((byte) REGISTERVEHICLE);
 //        writeBuffer.putInt(requestSize);
@@ -218,6 +223,7 @@ public class EVThroughputLatencyClient {
 
                 objOut.writeObject(EVRequestType.REGISTERUSER);
                 objOut.writeObject(user);
+                objOut.writeObject(data);
 
                 objOut.flush();
                 byteOut.flush();
@@ -244,6 +250,7 @@ public class EVThroughputLatencyClient {
 
                 objOut.writeObject(EVRequestType.REGISTERVEHICLE);
                 objOut.writeObject(vehicle);
+                objOut.writeObject(data);
 
                 objOut.flush();
                 byteOut.flush();
@@ -269,6 +276,7 @@ public class EVThroughputLatencyClient {
                 objOut.writeObject(EVRequestType.BOOKVEHICLE);
                 AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(userID, vehicleID);
                 objOut.writeObject(pair);
+                objOut.writeObject(data);
 
                 objOut.flush();
                 byteOut.flush();
@@ -297,6 +305,7 @@ public class EVThroughputLatencyClient {
 //            objOut.writeObject(pair);
                 Quartet<String, String, Float, Float> quartet = new Quartet<>(userID, vehicleID, distance, time);
                 objOut.writeObject(quartet);
+                objOut.writeObject(data);
 
                 objOut.flush();
                 byteOut.flush();
@@ -322,6 +331,7 @@ public class EVThroughputLatencyClient {
                 objOut.writeObject(EVRequestType.DISPUTE);
                 AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(userID, vehicleID);
                 objOut.writeObject(pair);
+                objOut.writeObject(data);
 
                 objOut.flush();
                 byteOut.flush();
